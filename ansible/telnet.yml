@@ -1,0 +1,17 @@
+---
+- hosts: all
+  sudo: True
+  user: trieu
+  connection: ssh
+
+  tasks:
+  - apt: name=$item state=latest
+    with_items:
+     - telnet
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+  - yum: name=$item state=latest
+    with_items:
+     - telnet
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
