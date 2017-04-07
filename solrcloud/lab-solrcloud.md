@@ -23,10 +23,12 @@ Cài đặt trên 1 máy Ubuntu Server 14.04 và chạy ở các cổng khác nh
 ### Cài đặt Apache ZooKeeper
 Download tại: https://zookeeper.apache.org/releases.html
 
-Tải về:
+Hoặc tải về bằng terminal:
+
 	 trieu@ubuntu:~$ wget http://mirror.downloadvn.com/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz
 
 Giải nén:
+
 	 trieu@ubuntu:~$ tar xzf zookeeper-3.4.8.tar.gz
 
 #### Cấu hình cho các ZooKeeper
@@ -90,10 +92,10 @@ Viết Shell chạy tự động
 	 trieu@ubuntu:~/zookeeper$ cp startZookeeper.sh stopZookeeper.sh
 	 trieu@ubuntu:~/zookeeper$ vi stopZookeeper.sh
 
-         #!/bin/sh
-         bin/zkServer.sh stop conf/zoo.cfg
-         bin/zkServer.sh stop conf/zoo2.cfg
-         bin/zkServer.sh stop conf/zoo3.cfg
+	 #!/bin/sh
+	 bin/zkServer.sh stop conf/zoo.cfg
+	 bin/zkServer.sh stop conf/zoo2.cfg
+	 bin/zkServer.sh stop conf/zoo3.cfg
 
 	 trieu@ubuntu:~/zookeeper$ ./startZookeeper.sh
 
@@ -110,7 +112,7 @@ Viết Shell chạy tự động
 ### Cài đặt Apache Solr 
 Download tại: http://www.apache.org/dyn/closer.lua/lucene/solr/6.5.0
 
-Tải về:
+Hoặc tải về bằng terminal:
 
 	 trieu@ubuntu:~$ wget http://mirror.downloadvn.com/apache/lucene/solr/6.5.0/solr-6.5.0.tgz
 
@@ -126,14 +128,16 @@ Khởi động:
 	 Started Solr server on port 8983 (pid=4363). Happy searching!
 
 #### Cấu hình
- trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr2
- trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr3
- trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr4
- trieu@ubuntu:~$ cp solr-6.5.0/server/solr/solr.xml solr-6.5.0/server/solr2/
- trieu@ubuntu:~$ cp solr-6.5.0/server/solr/solr.xml solr-6.5.0/server/solr3/
- trieu@ubuntu:~$ cp solr-6.5.0/server/solr/solr.xml solr-6.5.0/server/solr4/
+
+	trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr2
+	trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr3
+ 	trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr4
+	trieu@ubuntu:~$ cp solr-6.5.0/server/solr/solr.xml solr-6.5.0/server/solr2/
+	trieu@ubuntu:~$ cp solr-6.5.0/server/solr/solr.xml solr-6.5.0/server/solr3/
+	trieu@ubuntu:~$ cp solr-6.5.0/server/solr/solr.xml solr-6.5.0/server/solr4/
 
 Sửa port:
+
 	 trieu@ubuntu:~$ vi solr-6.5.0/server/solr2/solr.xml
 	 <int name="hostPort">${jetty.port:8984}</int>
 
