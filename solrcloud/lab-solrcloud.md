@@ -3,63 +3,66 @@
 
 Cài đặt trên 1 máy Ubuntu Server 14.04 và chạy ở các cổng khác nhau
 ## Cài đặt Oracle JAVA 8
- $ sudo add-apt-repository ppa:webupd8team/java
- $ sudo apt-get update
- $ sudo apt-get install oracle-java8-installer
+	$ sudo add-apt-repository ppa:webupd8team/java
+	$ sudo apt-get update
+	$ sudo apt-get install oracle-java8-installer
 
 ### Kiểm tra phiên bản Java đã cài đặt
- $ java -version 
- 
- java version "1.8.0_121"
- Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
- Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode, sharing)
+	$ java -version 
+	
+	java version "1.8.0_121"
+	Java(TM) SE Runtime Environment (build 1.8.0_121-b13)
+	Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode, sharing)
 
 ### Thiết lập biến môi trường Java
- $ export JAVA_HOME=usr/lib/jvm/java-8-oracle
-
- trieu@ubuntu:~$ echo $JAVA_HOME 
- /usr/lib/jvm/java-8-oracle
+	$ export JAVA_HOME=usr/lib/jvm/java-8-oracle
+	
+	trieu@ubuntu:~$ echo $JAVA_HOME 
+	/usr/lib/jvm/java-8-oracle
 
 ### Cài đặt Apache ZooKeeper
 Download tại: https://zookeeper.apache.org/releases.html
+
 Tải về:
- 	trieu@ubuntu:~$ wget http://mirror.downloadvn.com/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz
+	 trieu@ubuntu:~$ wget http://mirror.downloadvn.com/apache/zookeeper/zookeeper-3.4.8/zookeeper-3.4.8.tar.gz
 
 Giải nén:
- 	trieu@ubuntu:~$ tar xzf zookeeper-3.4.8.tar.gz
-#### Cấu hình cho các ZooKeeper
- $ cd zookeeper-3.4.8/conf
- $ vi zoo.cfg
- 
- dataDir=/home/trieu/zookeeper-data/1
- clientPort=2181
- initLimit=5
- syncLimit=2
- server.1=localhost:2888:3888
- server.2=localhost:2889:3889
- server.3=localhost:2890:3890
+	 trieu@ubuntu:~$ tar xzf zookeeper-3.4.8.tar.gz
 
- $ cp zoo.cfg zoo2.cfg
- $ vi zoo2.cfg
- dataDir=/home/trieu/zookeeper-data/2
- clientPort=2182
- initLimit=5
- syncLimit=2
- server.1=localhost:2888:3888
- server.2=localhost:2889:3889
- server.3=localhost:2890:3890
- 
- $ cp zoo.cfg zoo3.cfg
- $ vi zoo3.cfg
- dataDir=/home/trieu/zookeeper-data/3
- clientPort=2183
- initLimit=5
- syncLimit=2
- server.1=localhost:2888:3888
- server.2=localhost:2889:3889
- server.3=localhost:2890:3890
+#### Cấu hình cho các ZooKeeper
+	$ cd zookeeper-3.4.8/conf
+	$ vi zoo.cfg
+	
+	dataDir=/home/trieu/zookeeper-data/1
+	clientPort=2181
+	initLimit=5
+	syncLimit=2
+	server.1=localhost:2888:3888
+	server.2=localhost:2889:3889
+	server.3=localhost:2890:3890
+	
+	$ cp zoo.cfg zoo2.cfg
+	$ vi zoo2.cfg
+	dataDir=/home/trieu/zookeeper-data/2
+	clientPort=2182
+	initLimit=5
+	syncLimit=2
+	server.1=localhost:2888:3888
+	server.2=localhost:2889:3889
+	server.3=localhost:2890:3890
+	
+	$ cp zoo.cfg zoo3.cfg
+	$ vi zoo3.cfg
+	dataDir=/home/trieu/zookeeper-data/3
+	clientPort=2183
+	initLimit=5
+	syncLimit=2
+	server.1=localhost:2888:3888
+	server.2=localhost:2889:3889
+	server.3=localhost:2890:3890
 
 Tạo các thư mục chứa dữ liệu của Zookeeper tương ứng
+
 	 $ mkdir /home/trieu/zookeeper-data
 	 $ mkdir /home/trieu/zookeeper-data/1
 	 $ mkdir /home/trieu/zookeeper-data/2
@@ -74,6 +77,7 @@ Tạo các thư mục chứa dữ liệu của Zookeeper tương ứng
 	 3
 
 Viết Shell chạy tự động
+
 	 trieu@ubuntu:~$ cd zookeeper-3.4.8
 	 trieu@ubuntu:~/zookeeper$ vi startZookeeper.sh
 
@@ -105,16 +109,22 @@ Viết Shell chạy tự động
 	
 ### Cài đặt Apache Solr 
 Download tại: http://www.apache.org/dyn/closer.lua/lucene/solr/6.5.0
+
 Tải về:
+
 	 trieu@ubuntu:~$ wget http://mirror.downloadvn.com/apache/lucene/solr/6.5.0/solr-6.5.0.tgz
 
 Giải nén:
+
 	 trieu@ubuntu:~$ tar xzf solr-6.5.0.tgz
+
 Khởi động:
+
 	 trieu@ubuntu:~$ cd solr-6.5.0/
 	 trieu@ubuntu:~/solr-6.5.0$ bin/solr start
 	 Waiting up to 180 seconds to see Solr running on port 8983 [|]  
 	 Started Solr server on port 8983 (pid=4363). Happy searching!
+
 #### Cấu hình
  trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr2
  trieu@ubuntu:~$ mkdir solr-6.5.0/server/solr3
@@ -134,6 +144,7 @@ Sửa port:
          <int name="hostPort">${jetty.port:8986}</int>
 
 Viết Shell chạy tự động và kết nối đến các ZooKeeper:
+
 	 trieu@ubuntu:~$ vi solr-6.5.0/startSolr.sh
 	 #!/bin/sh
 	 bin/solr start -c -s server/solr -p 8983 -z localhost:2181,localhost:2182,localhost:2183 -noprompt
@@ -152,7 +163,9 @@ Viết Shell chạy tự động và kết nối đến các ZooKeeper:
 	 trieu@ubuntu:~$ chmod +x stopSolr.sh
 
 Khởi động Solr kết nối đến các ZooKeeper:
+
 	 trieu@ubuntu:~$ cd solr-6.5.0/
+	 trieu@ubuntu:~$ cd solr-6.5.0/bin/solr stop -all
 	 trieu@ubuntu:~/solr-6.5.0$ ./startSolr.sh
 	 Waiting up to 180 seconds to see Solr running on port 8983 [\]  
 	 Started Solr server on port 8983 (pid=4789). Happy searching!
@@ -167,6 +180,7 @@ Khởi động Solr kết nối đến các ZooKeeper:
 	 Started Solr server on port 8986 (pid=5411). Happy searching!
 
 Kiểm tra trạng thái:
+
 	 trieu@ubuntu:~/solr-6.5.0$ bin/solr status
 	 Found 4 Solr nodes: 
 	 
@@ -222,16 +236,19 @@ Kiểm tra trạng thái:
 	     "collections":"1"}}
 
 Tạo Collection:
+
 	 trieu@ubuntu:~/solr-6.5.0$ bin/solr create -c mycloud -p 8983 -s 2 -rf 2
 
 Kết quả:
 - Truy cập vào địa chỉ: localhost:8983/solr
 <div style="text-align:center"><img src="images/solrcloud1.png" /> </div>
+
 - Cloud:
 <div style="text-align:center"><img src="images/solrcloud2.png" /> </div>
 
 ### Thêm Documents 
 Sử dụng Documents có sẵn:
+
 	 trieu@ubuntu:~/solr-6.5.0$ bin/post -c mycloud example/exampledocs/*.xml
 	 /usr/lib/jvm/java-8-oracle/bin/java -classpath /home/trieu/solr-6.5.0/dist/solr-core-6.5.0.jar -Dauto=yes -Dc=mycloud -Ddata=files org.apache.solr.util.SimplePostTool example/exampledocs/gb18030-example.xml example/exampledocs/hd.xml example/exampledocs/ipod_other.xml example/exampledocs/ipod_video.xml example/exampledocs/manufacturers.xml example/exampledocs/mem.xml example/exampledocs/money.xml example/exampledocs/monitor2.xml example/exampledocs/monitor.xml example/exampledocs/mp500.xml example/exampledocs/sd500.xml example/exampledocs/solr.xml example/exampledocs/utf8-example.xml example/exampledocs/vidcard.xml
 	 SimplePostTool version 5.0.0
@@ -256,10 +273,14 @@ Sử dụng Documents có sẵn:
 	 Time spent: 0:00:13.354
 
 Thử một số câu truy vấn:
+
 	 http://192.168.188.129:8983/solr/mycloud/select?q=video
+
 Kết quả truy vấn:
+
 <div style="text-align:center"><img src="images/solrcloud3.png" /> </div>
 
 Một số câu truy vấn khác:
+
 	http://192.168.188.129:8983/solr/mycloud/select?q=video&fl=id,name,price
 	
