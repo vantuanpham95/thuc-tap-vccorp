@@ -7,6 +7,9 @@ Cài đặt trên 1 máy Ubuntu Server 14.04 và chạy ở các cổng khác nh
 	$ sudo apt-get update
 	$ sudo apt-get install oracle-java8-installer
 
+Trên CentOs
+	$ sudo yum install java-1.8.0-openjdk.x86_64
+
 ### Kiểm tra phiên bản Java đã cài đặt
 	$ java -version 
 	
