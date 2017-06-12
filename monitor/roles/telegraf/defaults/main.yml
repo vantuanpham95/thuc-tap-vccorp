@@ -1,0 +1,23 @@
+---
+
+telegraf_version: 0.13.2
+
+# Supported outputs: kafka | influxdb
+telegraf_output: kafka
+
+# Kafka destination
+# !!! Use the true hostname of brokers
+kafka_brokers:
+  - {ip: 192.168.188.149, hostname: ubuntu1, port: 9092}
+  - {ip: 192.168.188.150, hostname: ubuntu2, port: 9092}
+  - {ip: 192.168.188.151, hostname: ubuntu3, port: 9092}
+kafka_topic: telegraf
+kafka_input_data_format: graphite
+prefix_output_to_kafka: telegraf
+
+# InfluxDB destination
+# influxdb_url: http://localhost:8086
+# influxdb_db: telegraf
+# influxdb_user: telegraf
+# influxdb_pass: telegraf
+# influxdb_retention_policy: default

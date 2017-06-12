@@ -1,0 +1,54 @@
+---
+
+- hosts: servers
+  vars_files:
+    - defaults/main.yml
+  vars:
+    api_url: http://localhost{{influxdb_http_bind_address}}/query?u={{influxdb_admin_username}}&p={{influxdb_admin_password}}
+    influxdb_dbs:
+      - name: telegraf
+        retention_name: ansible_2w
+        retention_time: 2w
+        retention_replication: "1"
+        granted_users:
+          - name: readuser
+            password: readonly
+            privileges: READ
+          - name: writeuser
+            password: writeonly
+            privileges: WRITE
+          - name: alluser
+            password: allprivileges
+            privileges: ALL    
+  tasks:
+    - name: Create databases
+      shell: >
+        curl -XPOST "{{api_url}}"
+        --data-urlencode "q=CREATE DATABASE {{item.name}}"
+      changed_when: false
+      with_items: "{{influxdb_dbs}}"
+
+    - name: Create retentions
+      shell: >
+        curl -XPOST "{{api_url}}"
+        --data-urlencode "q=CREATE RETENTION POLICY {{item.retention_name}} ON {{item.name}} DURATION {{item.retention_time}} REPLICATION {{item.retention_replication}} DEFAULT"
+      changed_when: false
+      with_items: "{{influxdb_dbs}}"
+
+    - name: Create users
+      shell: >
+        curl -XPOST "{{api_url}}"
+        --data-urlencode "q=CREATE USER {{item.1.name}} WITH PASSWORD '{{item.1.password}}'"
+      changed_when: false
+      with_subelements:
+        - "{{influxdb_dbs}}"
+        - granted_users
+    
+    - name: Granted users to databases
+      shell: >
+        curl -XPOST "{{api_url}}"
+        --data-urlencode "q=GRANT {{item.1.privileges}} ON {{item.0.name}} TO {{item.1.name}}"
+      changed_when: false
+      with_subelements:
+        - "{{influxdb_dbs}}"
+        - granted_users

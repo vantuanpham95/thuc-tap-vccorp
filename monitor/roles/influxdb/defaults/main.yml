@@ -1,0 +1,16 @@
+---
+influxdb_version: 0.13.0
+
+# Admin
+influxdb_admin_enabled: true
+influxdb_admin_bind_address: ":8083"
+influxdb_admin_https_enabled: false
+
+# HTTP
+influxdb_http_enabled: true
+influxdb_http_bind_address: ":8086"
+influxdb_http_auth_enabled: true
+
+# User
+influxdb_admin_username: admin
+influxdb_admin_password: admin #4nSibl3

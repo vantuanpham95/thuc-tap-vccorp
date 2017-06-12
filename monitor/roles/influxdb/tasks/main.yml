@@ -1,0 +1,18 @@
+---
+
+- meta: flush_handlers
+
+- include: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+
+#- include: centos.yml
+#  when: ansible_distribution == "CentOS"
+
+- name: Ensure http port is accepting connections
+  wait_for: port={{influxdb_http_bind_address.split(':')[1]}} delay=5
+
+- name: Create user admin
+  shell: >
+    curl -XPOST "http://localhost{{influxdb_http_bind_address}}/query"
+    --data-urlencode "q=CREATE USER {{influxdb_admin_username}} WITH PASSWORD '{{influxdb_admin_password}}' WITH ALL PRIVILEGES"
+  changed_when: false

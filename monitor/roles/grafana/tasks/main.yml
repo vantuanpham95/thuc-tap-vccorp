@@ -1,0 +1,27 @@
+---
+
+- meta: flush_handlers
+
+- include: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+
+- include: centos.yml
+  when: ansible_distribution == "CentOS"
+
+- name: Configure LDAP Authentication
+  template: >
+    src=ldap.toml.j2
+    dest=/etc/grafana/ldap.toml
+    owner=root
+    group=root
+    mode=0644
+  when: grafana_ldap_auth_enabled
+  
+- name: Configure Grafana
+  template: >
+    src=grafana.ini.j2
+    dest=/etc/grafana/grafana.ini
+    owner=root
+    group=root
+    mode=0644
+  notify: restart grafana

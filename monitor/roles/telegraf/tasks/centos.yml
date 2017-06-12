@@ -1,0 +1,22 @@
+---
+
+- name: Add InfluxDB repository
+  copy: >
+    src=influxdb.repo
+    dest=/etc/yum.repos.d/influxdb.repo
+    owner=root
+    group=root
+    mode=0644
+
+- name: Install Telegraf
+  yum: name=telegraf state=latest
+  notify: start telegraf
+  
+- name: Configure Telegraf
+  template: >
+    src="telegraf_{{telegraf_output}}_conf.j2"
+    dest=/etc/telegraf/telegraf.conf
+    owner=root
+    group=root
+    mode=0644
+  notify: restart telegraf

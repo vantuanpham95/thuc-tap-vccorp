@@ -1,0 +1,22 @@
+---
+
+- name: Add InfluxDB repository
+  copy: >
+    src=influxdb.repo
+    dest=/etc/yum.repos.d/influxdb.repo
+    owner=root
+    group=root
+    mode=0644
+
+- name: Install Influxdb
+  yum: name=influxdb state=latest
+  notify: start influxdb
+
+- name: Configure Influxdb
+  template: >
+    src=influxdb.conf.j2
+    dest=/etc/influxdb/influxdb.conf
+    owner=root
+    group=root
+    mode=0644
+  notify: restart influxdb

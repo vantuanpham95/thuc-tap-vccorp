@@ -1,0 +1,20 @@
+---
+
+- name: Add apt key for InfluxDB
+  apt_key: url=https://repos.influxdata.com/influxdb.key
+
+- name: Add InfluxDB repository
+  apt_repository: repo="deb https://repos.influxdata.com/{{ansible_distribution|lower}} {{ansible_distribution_release|lower}} stable"
+
+- name: Install Telegraf
+  apt: name=telegraf state=latest update_cache=yes
+  notify: start telegraf
+
+- name: Configure Telegraf
+  template: >
+    src="telegraf_{{telegraf_output}}_conf.j2"
+    dest=/etc/telegraf/telegraf.conf
+    owner=root
+    group=root
+    mode=0644
+  notify: restart telegraf

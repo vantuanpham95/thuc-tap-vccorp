@@ -1,0 +1,17 @@
+---
+
+- meta: flush_handlers
+
+- include: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
+
+- include: centos.yml
+  when: ansible_distribution == "CentOS"
+
+- name: Add Kafka brokers to /etc/hosts
+  lineinfile: >
+    dest=/etc/hosts
+    regexp="^{{item.ip|replace(".", "\.")}}"
+    line="{{item.ip}}   {{item.hostname}}"
+  with_items: "{{kafka_brokers}}"
+  when: telegraf_output == "kafka"

@@ -1,0 +1,14 @@
+---
+
+grafana_version: 3.1.1-1470047149
+grafana_http_port: 3000
+grafana_https_enabled: false
+
+# grafana_https_enabled: yes
+# grafana_cert_file_path:
+# grafana_cert_key_path:
+
+# grafana_domain:
+
+# LDAP Authentication
+grafana_ldap_auth_enabled: true

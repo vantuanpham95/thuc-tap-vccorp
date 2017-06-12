@@ -1,0 +1,13 @@
+---
+
+- name: Add Grafana repository
+  copy: >
+    src=grafana.repo
+    dest=/etc/yum.repos.d
+    owner=root
+    group=root
+    mode=0644
+
+- name: Install Grafana
+  yum: name=grafana state=latest
+  notify: start grafana
