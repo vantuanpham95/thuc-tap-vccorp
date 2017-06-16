@@ -1,7 +1,6 @@
 ---
  - name: make sure java is installed
-    #sudo: yes
-   apt: name=default-jre update_cache=yes cache_valid_time=3600
+   yum: name=java-1.8.0-openjdk update_cache=yes 
 
  - name: ensure requier folders exits
    file:
@@ -39,9 +38,9 @@
      dest: "{{zookeeper_data_dir}}/myid"
      owner: "{{solrcloud_user}}"
 
- - name: Start Zookeeper
-   command: "{{zookeeper_install_dir}}/bin/zkServer.sh start"
-   tags: start_zoo
+ #- name: Start Zookeeper
+  # command: "{{zookeeper_install_dir}}/bin/zkServer.sh start"
+   #tags: start_zoo
 
  #- name: Restart Zookeeper
   # command: "{{zookeeper_install_dir}}/bin/zkServer.sh restart"

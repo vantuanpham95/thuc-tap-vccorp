@@ -1,7 +1,15 @@
 ---
- - name: install zookeeper by specific OS
-   include: Debian.yml
-   when: ansible_os_family=="Debian"
+ - meta: flush_handlers
 
+ - include: centos.yml
+   when: ansible_distribution == "CentOS"
+
+ - include: ubuntu.yml
+   when: ansible_distribution == "Ubuntu"
+
+ - name: Start Zookeeper
+   command: "{{zookeeper_install_dir}}/bin/zkServer.sh start"
+   tags: start_zoo
+   
  - name: ensure zookeeper port is reachable by client
    wait_for: state=started port={{ zookeeper_client_port }} timeout=30
