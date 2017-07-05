@@ -8,9 +8,10 @@ telegraf_output: kafka
 # Kafka destination
 # !!! Use the true hostname of brokers
 kafka_brokers:
-  - {ip: 192.168.188.149, hostname: ubuntu1, port: 9092}
-  - {ip: 192.168.188.150, hostname: ubuntu2, port: 9092}
-  - {ip: 192.168.188.151, hostname: ubuntu3, port: 9092}
+  - {ip: 192.168.188.149, hostname: ubuntu1, port: 9099}
+  - {ip: 192.168.188.150, hostname: ubuntu2, port: 9099}
+  - {ip: 192.168.188.151, hostname: ubuntu3, port: 9099}
+
 kafka_topic: telegraf
 kafka_input_data_format: graphite
 prefix_output_to_kafka: telegraf

@@ -1,0 +1,52 @@
+---
+
+
+- name: Copy source kapacitor
+  copy: src="kapacitor_1.3.1_amd64.deb" dest=/opt
+  when: ansible_os_family == 'Debian'
+
+- name: Install kapacitor
+  apt: deb=/opt/kapacitor_1.3.1_amd64.deb
+  when: ansible_os_family == 'Debian'
+ # notify: 
+  #  - start kapacitor
+- name: start kapacitor
+  service: name=kapacitor state=started enabled=yes
+
+- name: Create /var/lib/kapacitor/ticks
+  file: path=/var/lib/kapacitor/ticks state=directory mode=0755 recurse=yes
+
+- name : Configure kapacitor
+  template: 
+    src: kapacitor.conf.j2 
+    dest: /etc/kapacitor/kapacitor.conf 
+    owner: root 
+    group: root 
+    mode: 0644
+  notify: 
+    - restart kapacitor
+
+- name: Copy ticks file
+  copy: >
+    src=../ticks/{{ item }}
+    dest=/var/lib/kapacitor/ticks/{{ item }} mode=0755
+  with_items:
+    - check_cpu.tick
+  tags: up_ticks_file
+
+- name: Run ticks file
+  shell: >
+    kapacitor define {{ item }} \
+      -type stream \
+      -tick /var/lib/kapacitor/ticks/{{ item }}.tick \
+      -dbrp telegraf.autogen
+  with_items:
+    - check_cpu
+  tags: up_ticks_file
+
+- name: Enable ticks file
+  shell: >
+    kapacitor enable {{ item }}
+  with_items:
+    - check_cpu
+  tags: up_ticks_file

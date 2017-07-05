@@ -1,0 +1,19 @@
+---
+ - meta: flush_handlers
+
+ - include: centos.yml
+   when: ansible_distribution == "CentOS"
+
+ - include: ubuntu.yml
+   when: ansible_distribution == "Ubuntu"
+
+ - name: Start Zookeeper
+   command: "{{zookeeper_install_dir}}/bin/zkServer.sh start"
+   tags: start_zoo
+   
+ - name: Restart Zookeeper
+   command: "{{zookeeper_install_dir}}/bin/zkServer.sh restart"
+   tags: config_zoo
+
+ - name: ensure zookeeper port is reachable by client
+   wait_for: state=started port={{ zookeeper_client_port }} timeout=30

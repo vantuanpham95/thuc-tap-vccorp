@@ -1,0 +1,43 @@
+---
+ - name: make sure java is installed
+   yum: name=java-1.8.0-openjdk update_cache=yes
+
+ - name: ensure requier folders exits
+   file:
+     path: "{{ item }}"
+     state: directory
+     owner: "{{solrcloud_user}}"
+     group: "{{solrcloud_group}}"
+   with_items:
+    - "{{ zookeeper_data_dir }}"
+    - "{{zookeeper_install_dir}}"
+    - " {{zookeeper_install_dir}}/conf "
+    - "{{ zookeeper_log_dir }}"
+
+ - name: Download Zookeeper
+   copy: src=zookeeper-3.4.10.tar.gz dest=/tmp
+
+ - name : Unpacked Zookeeper
+   unarchive:
+     copy: no
+     src: "{{ zookeeper_temp_archive }}"
+     dest: "/opt"
+     owner: "{{solrcloud_user}}"
+     group: "{{solrcloud_group}}"
+
+ - name : Configure zookeeper
+   template:
+     src: zoo.cfg.j2
+     dest: "{{zookeeper_install_dir}}/conf/zoo.cfg"
+     owner: "{{solrcloud_user}}"
+     group: "{{solrcloud_group}}"
+   tags: config_zoo
+
+ - name : ensure zookeeper has correct id
+   template:
+     src: myid.j2
+     dest: "{{zookeeper_data_dir}}/myid"
+     owner: "{{solrcloud_user}}"
+
+
+

@@ -1,0 +1,25 @@
+stream
+    // Select just the cpu measurement from our example database.
+    |from()
+        .measurement('ubuntu1_cpu-total_cpu_usage_idle')
+    |alert()
+        .id('kapacitor/{{ .Name }}')
+        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "value" }}')
+        .warn(lambda: "value" <  99)
+        .crit(lambda: "value" <  99)
+        // Whenever we get an alert write it to a file.
+        .log('/var/log/kapacitor/alerts.log')
+        .hipChat()
+
+stream
+    // Select just the cpu measurement from our example database.
+    |from()
+        .measurement('ubuntu2_cpu-total_cpu_usage_idle')
+    |alert()
+        .id('kapacitor/{{ .Name }}')
+        .message('{{ .ID }} is {{ .Level}} value: {{ index .Fields "value" }}')
+        .warn(lambda: "value" <  99)
+        .crit(lambda: "value" <  99)
+        // Whenever we get an alert write it to a file.
+        .log('/var/log/kapacitor/alerts.log')
+        .hipChat()

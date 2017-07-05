@@ -1,5 +1,0 @@
-{% for server in zookeeper_hosts %}
-{% if server == ansible_host %}
-{{ loop.index }}
-{% endif %}
-{% endfor %}

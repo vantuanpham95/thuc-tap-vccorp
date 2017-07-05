@@ -1,34 +1,30 @@
 ## Telegraf -> kafka -> kafka-influxdb -> influxdb -> grafana
     
-### Install Telegraf
+### Cài Telegraf
 
-    ansible-playbook -i hosts site.yml --tags "setup_telegraf"
+    ansible-playbook -i hosts site.yml --tags "telegraf"
 
-### Install Kafka-system
+### Triển khai trong cụm kafka
 
-    ansible-playbook -i hosts site.yml --tags "setup_kafka"
+    ansible-playbook -i hosts site.yml --tags "kafka"
 
-Cài trên một máy trong cụm server:
+### Cài trên một máy trong cụm kafka
 
-        ansible-playbook -i hosts site.yml --tags "setup_kafka_influxdb" --limit servers[0]
+    ansible-playbook -i hosts site.yml --tags "kafka_influxdb" --limit servers[0]
 
-### Install InfluxDB
+Cài InfluxDB
 
-Cài trên 1 máy:
+        ansible-playbook -i hosts site.yml --tags "influxdb" --limit servers[0]  
 
-        ansible-playbook -i hosts site.yml --tags "setup_influxdb" --limit servers[0]  
+Cài Grafana
 
-Tạo Database:
+        ansible-playbook -i hosts site.yml --tags "grafana" --limit servers[0]
 
-        ansible-playbook -i hosts roles/influxdb/create_db.yml  --limit servers[0]
+Cài Kapacitor
 
-### Install Grafana
+        ansible-playbook -i hosts site.yml --tags "kapacitor" --limit servers[0]
 
-    ansible-playbook -i hosts site.yml --tags "setup_grafana" --limit servers[0]
-
-### Run configure kafka-influxdb
-
-- Thực thi trên máy có cài kafka_influxdb 
+Chạy configure kafka-influxdb
 
         cd /opt/pypy-venv/ && python -m kafka_influxdb -c custom-config.yaml -s
 

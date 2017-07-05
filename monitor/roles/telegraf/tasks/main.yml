@@ -15,3 +15,4 @@
     line="{{item.ip}}   {{item.hostname}}"
   with_items: "{{kafka_brokers}}"
   when: telegraf_output == "kafka"
+  tags: config_telegraf

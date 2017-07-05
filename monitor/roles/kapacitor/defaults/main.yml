@@ -1,0 +1,10 @@
+---
+
+# User InfluxDB
+influxdb_admin_username: admin
+influxdb_admin_password: admin
+
+# HipChat
+hipchat_url: https://trieulv.hipchat.com/v2/room
+hipchat_room: Trieulv
+hipchat_token: n3y2dLepXk2gGhPIDyJ1hIT0PaUANGWIL2ZFYlVn
